@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Icon, Label, Menu, Table } from "semantic-ui-react";
 import { ProductService } from "../services/productService";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
-    useEffect(()=>{
-        let productService = new ProductService()
-        productService.getProducts().then(result=>setProducts(result.data.data))
-    })
+  
+  useEffect(() => {
+    let productService = new ProductService();
+    productService
+      .getProducts()
+      .then((result) => setProducts(result.data.data));
+  }, []);
   return (
     <div>
       <Table celled>
@@ -23,8 +27,12 @@ export default function ProductList() {
 
         <Table.Body>
           {products.map((product) => (
-            <Table.Row key = {product.id}>
-              <Table.Cell>{product.productName}</Table.Cell>
+            <Table.Row key={product.id}>
+              <Table.Cell>
+                <Link to={`/products/${product.productName}`}>
+                  {product.productName}
+                </Link>
+              </Table.Cell>
               <Table.Cell>{product.unitPrice}</Table.Cell>
               <Table.Cell>{product.unitsInStock}</Table.Cell>
               <Table.Cell>{product.quantityPerUnit}</Table.Cell>
